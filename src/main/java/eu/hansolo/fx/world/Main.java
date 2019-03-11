@@ -60,7 +60,7 @@ public class Main extends Application {
 
         CountryRegion myRegion = new CountryRegion("BENELUX", BE, NL, LU);
 
-        BusinessRegion.EU.setColor(Color.rgb(124, 208, 255));
+        // BusinessRegion.EU.setColor(Color.rgb(124, 208, 255));
         //BusinessRegion.APAC.setColor(Color.LIGHTSALMON);
 
         world = WorldBuilder.create()
@@ -72,34 +72,34 @@ public class Main extends Application {
                             //.pressedColor(Color.web("#6cee85"))
                             //.locationColor(Color.web("#0000ff"))
                             //.selectedColor(Color.MAGENTA)
-                            .locationIconCode(MaterialDesign.MDI_STAR)
-                            .locations(new Location("SFO", 37.619751, -122.374366),
-                                       new Location("YYC", 51.128148, -114.010791),
-                                       new Location("ORD", 41.975806, -87.905294),
-                                       new Location("YOW", 45.321867, -75.668200),
-                                       new Location("JFK", 40.642660, -73.781232),
-                                       new Location("GRU", -23.427337, -46.478853),
-                                       new Location("RKV", 64.131830, -21.945686),
-                                       new Location("MAD", 40.483162, -3.579211),
-                                       new Location("CDG", 49.014162, 2.541908),
-                                       new Location("LHR", 51.471125, -0.461951),
-                                       LocationBuilder.create()
-                                                      .name("FRA").latitude(50.040864).longitude(8.560409)
-                                                      .color(Color.CRIMSON)
-                                                      .iconCode(MaterialDesign.MDI_HEART)
-                                                      .mouseEnterHandler(e -> ((FontIcon) e.getSource()).setFill(Color.CYAN))
-                                                      .mousePressHandler(e -> {
-                                                          System.out.println("Frankfurt Airport");
-                                                          ((FontIcon) e.getSource()).setFill(Color.MAGENTA);
-                                                      })
-                                                      .mouseReleaseHandler(e -> ((FontIcon) e.getSource()).setFill(Color.CYAN))
-                                                      .mouseExitHandler(e -> ((FontIcon) e.getSource()).setFill(Color.CRIMSON))
-                                                      .build(),
-                                       new Location("SVO", 55.972401, 37.412537),
-                                       new Location("DEL", 28.555839, 77.100956),
-                                       new Location("PEK", 40.077624, 116.605458),
-                                       new Location("NRT", 35.766948, 140.385254),
-                                       new Location("SYD", -33.939040, 151.174996))
+                            // .locationIconCode(MaterialDesign.MDI_STAR)
+                            // .locations(new Location("SFO", 37.619751, -122.374366),
+                            //            new Location("YYC", 51.128148, -114.010791),
+                            //            new Location("ORD", 41.975806, -87.905294),
+                            //            new Location("YOW", 45.321867, -75.668200),
+                            //            new Location("JFK", 40.642660, -73.781232),
+                            //            new Location("GRU", -23.427337, -46.478853),
+                            //            new Location("RKV", 64.131830, -21.945686),
+                            //            new Location("MAD", 40.483162, -3.579211),
+                            //            new Location("CDG", 49.014162, 2.541908),
+                            //            new Location("LHR", 51.471125, -0.461951),
+                            //            LocationBuilder.create()
+                            //                           .name("FRA").latitude(50.040864).longitude(8.560409)
+                            //                           .color(Color.CRIMSON)
+                            //                           .iconCode(MaterialDesign.MDI_HEART)
+                            //                           .mouseEnterHandler(e -> ((FontIcon) e.getSource()).setFill(Color.CYAN))
+                            //                           .mousePressHandler(e -> {
+                            //                               System.out.println("Frankfurt Airport");
+                            //                               ((FontIcon) e.getSource()).setFill(Color.MAGENTA);
+                            //                           })
+                            //                           .mouseReleaseHandler(e -> ((FontIcon) e.getSource()).setFill(Color.CYAN))
+                            //                           .mouseExitHandler(e -> ((FontIcon) e.getSource()).setFill(Color.CRIMSON))
+                            //                           .build(),
+                            //            new Location("SVO", 55.972401, 37.412537),
+                            //            new Location("DEL", 28.555839, 77.100956),
+                            //            new Location("PEK", 40.077624, 116.605458),
+                            //            new Location("NRT", 35.766948, 140.385254),
+                            //            new Location("SYD", -33.939040, 151.174996))
                             .mousePressHandler(evt -> {
                                 CountryPath countryPath = (CountryPath) evt.getSource();
                                 Locale      locale      = countryPath.getLocale();
