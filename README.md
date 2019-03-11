@@ -1,5 +1,4 @@
-## World
-A JavaFX based world map with mouse interaction and geolocation support.
+# Semester Project
 
-## World
-![World](https://dl.dropboxusercontent.com/u/84552/WorldMapFX.png)
+## World Map
+Creating an interactive world map that displays data from the CIA World Factbook pertaining to the country clicked.
