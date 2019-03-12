@@ -15,6 +15,7 @@ dependencies {
     compile 'org.kordamp.ikonli:ikonli-core:1.9.0'
     compile 'org.kordamp.ikonli:ikonli-javafx:1.9.0'
     compile 'org.kordamp.ikonli:ikonli-materialdesign-pack:1.9.0'
+    compile 'org.json:json:20171018'
 }
 
 
