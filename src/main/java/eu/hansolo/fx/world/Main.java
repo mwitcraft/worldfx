@@ -105,6 +105,7 @@ public class Main extends Application {
                                 Locale      locale      = countryPath.getLocale();
                                 System.out.println(locale.getDisplayCountry() + " (" + locale.getISO3Country() + ")");
                                 System.out.println(Country.valueOf(countryPath.getName()).getValue() + " million people");
+                                System.out.println(new Factbook());
                             })
                             .zoomEnabled(true)
                             .selectionEnabled(true)
