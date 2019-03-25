@@ -1,9 +1,13 @@
+// Ignore javafx errors: https://stackoverflow.com/questions/40599028/visual-studio-code-java-access-restriction
+import org.gradle.plugins.ide.eclipse.model.AccessRule
+
 group 'eu.hansolo.fx'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'application'
+apply plugin: 'eclipse'
 
 sourceCompatibility = 1.8
 
@@ -16,6 +20,20 @@ dependencies {
     compile 'org.kordamp.ikonli:ikonli-javafx:1.9.0'
     compile 'org.kordamp.ikonli:ikonli-materialdesign-pack:1.9.0'
     compile 'org.json:json:20171018'
+    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+}
+
+eclipse {
+    classpath {
+        file {
+            whenMerged {
+                def jre = entries.find { it.path.contains 'org.eclipse.jdt.launching.JRE_CONTAINER' }
+                jre.accessRules.add(new AccessRule('0', 'javafx/**'))
+                jre.accessRules.add(new AccessRule('0', 'com/sun/javafx/**'))
+            }
+        }
+    }
 }
 
 
