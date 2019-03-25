@@ -50,6 +50,8 @@ public class Main extends Application {
     private              World         world;
     private              CountryRegion europeanUnion;
 
+    private Factbook factbook = new Factbook();
+
 
     @Override public void init() {
         europeanUnion = new CountryRegion("EU", BE, GR, LT, PT, BG, ES, LU, RO, CZ, FR, HU, SI, DK, HR, MT, SK, DE, IT, NL, FI, EE, CY, AT, SE, IE, LV, PL, GB);
@@ -105,7 +107,10 @@ public class Main extends Application {
                                 Locale      locale      = countryPath.getLocale();
                                 System.out.println(locale.getDisplayCountry() + " (" + locale.getISO3Country() + ")");
                                 System.out.println(Country.valueOf(countryPath.getName()).getValue() + " million people");
-                                System.out.println(new Factbook());
+
+
+                                FactbookCountry c = new FactbookCountry(factbook, locale.getDisplayCountry());
+
                             })
                             .zoomEnabled(true)
                             .selectionEnabled(true)

@@ -10,6 +10,8 @@ class Factbook{
 
 private String factbookPath = "/home/mason/Dropbox/School/Semester6/HCI/Project/SourceFiles/worldfx/src/main/java/eu/hansolo/fx/world/factbook.json";
 
+private JSONObject countries;
+
     public Factbook(){
         JSONParser parser = new JSONParser();
         FileReader f = null;
@@ -26,12 +28,16 @@ private String factbookPath = "/home/mason/Dropbox/School/Semester6/HCI/Project/
         }
 
         JSONObject jsonObj = (JSONObject)obj;
-        JSONObject countries = (JSONObject)jsonObj.get("countries");
-        JSONObject world = (JSONObject)countries.get("world");
-        JSONObject data = (JSONObject)world.get("data");
-        String name = (String)data.get("name");
+        countries = (JSONObject)jsonObj.get("countries");
+        // JSONObject world = (JSONObject)countries.get("world");
+        // JSONObject data = (JSONObject)world.get("data");
+        // String name = (String)data.get("name");
         // JSONObject intro = (JSONObject)data.get("introduction");
-        System.out.println(name);
+        // System.out.println(name);
         
+    }
+
+    public JSONObject getCountries(){
+        return countries;
     }
 }
