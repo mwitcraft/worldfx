@@ -54,62 +54,70 @@ public class Main extends Application {
 
 
     @Override public void init() {
-        europeanUnion = new CountryRegion("EU", BE, GR, LT, PT, BG, ES, LU, RO, CZ, FR, HU, SI, DK, HR, MT, SK, DE, IT, NL, FI, EE, CY, AT, SE, IE, LV, PL, GB);
-        //europeanUnion.setColor(Color.LIGHTBLUE);
-        //for (Country country : europeanUnion.getCountries()) {
-        //    country.setColor(Color.rgb(RND.nextInt(127) + 100, 0, RND.nextInt(127) + 128));
-        //}
-
-        CountryRegion myRegion = new CountryRegion("BENELUX", BE, NL, LU);
-
-        // BusinessRegion.EU.setColor(Color.rgb(124, 208, 255));
-        //BusinessRegion.APAC.setColor(Color.LIGHTSALMON);
-
         world = WorldBuilder.create()
                             .resolution(Resolution.HI_RES)
-                            //.backgroundColor(Color.web("#4aa9d7"))
-                            //.fillColor(Color.web("#dcb36c"))
-                            //.strokeColor(Color.web("#987028"))
-                            //.hoverColor(Color.web("#fec47e"))
-                            //.pressedColor(Color.web("#6cee85"))
-                            //.locationColor(Color.web("#0000ff"))
-                            //.selectedColor(Color.MAGENTA)
-                            // .locationIconCode(MaterialDesign.MDI_STAR)
-                            // .locations(new Location("SFO", 37.619751, -122.374366),
-                            //            new Location("YYC", 51.128148, -114.010791),
-                            //            new Location("ORD", 41.975806, -87.905294),
-                            //            new Location("YOW", 45.321867, -75.668200),
-                            //            new Location("JFK", 40.642660, -73.781232),
-                            //            new Location("GRU", -23.427337, -46.478853),
-                            //            new Location("RKV", 64.131830, -21.945686),
-                            //            new Location("MAD", 40.483162, -3.579211),
-                            //            new Location("CDG", 49.014162, 2.541908),
-                            //            new Location("LHR", 51.471125, -0.461951),
-                            //            LocationBuilder.create()
-                            //                           .name("FRA").latitude(50.040864).longitude(8.560409)
-                            //                           .color(Color.CRIMSON)
-                            //                           .iconCode(MaterialDesign.MDI_HEART)
-                            //                           .mouseEnterHandler(e -> ((FontIcon) e.getSource()).setFill(Color.CYAN))
-                            //                           .mousePressHandler(e -> {
-                            //                               System.out.println("Frankfurt Airport");
-                            //                               ((FontIcon) e.getSource()).setFill(Color.MAGENTA);
-                            //                           })
-                            //                           .mouseReleaseHandler(e -> ((FontIcon) e.getSource()).setFill(Color.CYAN))
-                            //                           .mouseExitHandler(e -> ((FontIcon) e.getSource()).setFill(Color.CRIMSON))
-                            //                           .build(),
-                            //            new Location("SVO", 55.972401, 37.412537),
-                            //            new Location("DEL", 28.555839, 77.100956),
-                            //            new Location("PEK", 40.077624, 116.605458),
-                            //            new Location("NRT", 35.766948, 140.385254),
-                            //            new Location("SYD", -33.939040, 151.174996))
                             .mousePressHandler(evt -> {
                                 CountryPath countryPath = (CountryPath) evt.getSource();
                                 Locale      locale      = countryPath.getLocale();
                                 System.out.println(locale.getDisplayCountry() + " (" + locale.getISO3Country() + ")");
-                                System.out.println(Country.valueOf(countryPath.getName()).getValue() + " million people");
+                                // System.out.println(Country.valueOf(countryPath.getName()).getValue() + " million people");
 
 
-                                FactbookCountry c = new FactbookCountry(factbook, locale.getDisplayCountry());
+                                // FactbookCountry c = new FactbookCountry(factbook, locale.getDisplayCountry());
+                                System.out.println("Gov Type: ");
+                                System.out.println("\t" + factbook.getGovType(locale.getDisplayCountry()));
+                                System.out.println("Head of State: ");
+                                System.out.println("\t" + factbook.getHeadOfState(locale.getDisplayCountry()));
+                                System.out.println("Languages:");
+                                String[] a = factbook.getLanguage(locale.getDisplayCountry());
+                                if(a != null){
+                                    for(int i = 0; i < a.length; ++i){
+                                        System.out.println("\t" + a[i]);
+                                    }
+                                } else {
+                                    System.out.println("\tnull");
+                                }
+                                System.out.println("GDP:");
+                                System.out.println("\t$" + factbook.getGdp(locale.getDisplayCountry()));
+
+                                System.out.println("Per Capita GDP:");
+                                System.out.println("\t$" + factbook.getGdpPerCapita(locale.getDisplayCountry()));
+
+                                System.out.println("Exchange Rate:");
+                                String[] rates = factbook.getExchangeRate(locale.getDisplayCountry());
+                                if(rates != null){
+                                    System.out.println("\t" + rates[1]);
+                                    System.out.println("\t" + rates[0]);
+                                }
+
+                                System.out.println("Capital:");
+                                System.out.println("\t" + factbook.getCapital(locale.getDisplayCountry()));
+
+                                System.out.println("Population:");
+                                System.out.println("\t" + factbook.getPopulation(locale.getDisplayCountry()));
+
+                                System.out.println("Cities:");
+                                String[] cities = factbook.getCities(locale.getDisplayCountry());
+                                if(cities != null){
+                                    for(int i = 0; i < cities.length; ++i){
+                                        System.out.println("\t" + cities[i]);
+                                    }
+                                } else {
+                                    System.out.println("\tnull");
+                                }
+
+                                System.out.println("Religions:");
+                                String[] religions = factbook.getReligions(locale.getDisplayCountry());
+                                if(religions != null){
+                                    for(int i = 0; i < religions.length; ++i){
+                                        System.out.println("\t" + religions[i] + "%");
+                                    } 
+                                } else {
+                                    System.out.println("\tnull");
+                                }
+
+
+
 
                             })
                             .zoomEnabled(true)
