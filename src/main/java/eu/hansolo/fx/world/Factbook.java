@@ -269,18 +269,70 @@ private JSONObject countryData;
         }
     }
 
-    public String getImports(String country){
+    public String[] getImports(String countryName){
+        try{
+            //Get the data for the country
+            countryName = countryName.replace(" ", "_").toLowerCase();
+            JSONObject country = (JSONObject)countryData.get(countryName);
+            country = (JSONObject)country.get("data");
 
-        return null;
+            //Get JSONObject that contains the JSONArray of the imports for the country
+            country = (JSONObject)country.get("economy");
+            country = (JSONObject)country.get("imports");
+            country = (JSONObject)country.get("commodities");
+
+            //Loops through the json array and stores the imports in 'imports'
+            JSONArray imps = (JSONArray)country.get("by_commodity");
+            String[] imports = new String[imps.size()];
+            for(int i = 0; i < imps.size(); ++i){
+                imports[i] = (String)imps.get(i); //Name is always a string
+            }
+
+            return imports;
+        } catch(Exception e){
+            //Handle the outcome of this later
+            return null;
+        }
     }
 
-    public String getExports(String country){
+    public String[] getExports(String countryName){
+        try{
+            //Get the data for the country
+            countryName = countryName.replace(" ", "_").toLowerCase();
+            JSONObject country = (JSONObject)countryData.get(countryName);
+            country = (JSONObject)country.get("data");
 
-        return null;
+            //Get JSONObject that contains the JSONArray of the exports for the country
+            country = (JSONObject)country.get("economy");
+            country = (JSONObject)country.get("exports");
+            country = (JSONObject)country.get("commodities");
+
+            //Loops through the json array and stores the exports in 'exports'
+            JSONArray exps = (JSONArray)country.get("by_commodity");
+            String[] exports = new String[exps.size()];
+            for(int i = 0; i < exps.size(); ++i){
+                exports[i] = (String)exps.get(i); //Name is always a string
+            }
+
+            return exports;
+        } catch(Exception e){
+            //Handle the outcome of this later
+            return null;
+        }
     }
 
-    public String getHistory(String country){
+    public String getHistory(String countryName){
+        try{
+            countryName = countryName.replace(" ", "_").toLowerCase();
+            JSONObject country = (JSONObject)countryData.get(countryName);
 
-        return null;
+            country = (JSONObject)country.get("data");
+            country = (JSONObject)country.get("introduction");
+            String history = (String)country.get("background");
+
+            return history;
+        } catch(Exception e){
+            return null;
+        }
     }
 }
