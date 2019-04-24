@@ -24,7 +24,9 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 
 import java.util.Locale;
 
@@ -39,86 +41,106 @@ public class Main extends Application {
                             .resolution(Resolution.HI_RES)
                             .mousePressHandler(evt -> {
                                 CountryPath countryPath = (CountryPath) evt.getSource();
-                                Locale      locale      = countryPath.getLocale();
-                                System.out.println(locale.getDisplayCountry() + " (" + locale.getISO3Country() + ")");
+                                Locale locale = countryPath.getLocale();
+                                
+                                VBox root = new VBox();                                
 
-                                System.out.println("Gov Type: ");
-                                System.out.println("\t" + factbook.getGovType(locale.getDisplayCountry()));
+                                StackPane pane = new StackPane();
+                                
+                                Label label = new Label(locale.getDisplayCountry());
 
-                                System.out.println("Head of State: ");
-                                System.out.println("\t" + factbook.getHeadOfState(locale.getDisplayCountry()));
+                                pane.getChildren().add(label);
 
-                                System.out.println("Languages:");
-                                String[] a = factbook.getLanguage(locale.getDisplayCountry());
-                                if(a != null){
-                                    for(int i = 0; i < a.length; ++i){
-                                        System.out.println("\t" + a[i]);
-                                    }
-                                } else {
-                                    System.out.println("\tnull");
-                                }
+                                root.getChildren().add(pane);
 
-                                System.out.println("GDP:");
-                                System.out.println("\t$" + factbook.getGdp(locale.getDisplayCountry()));
+                                Scene scene = new Scene(root, 550, 250);
 
-                                System.out.println("Per Capita GDP:");
-                                System.out.println("\t$" + factbook.getGdpPerCapita(locale.getDisplayCountry()));
+                                Stage stage = new Stage(); 
+                                stage.setTitle(locale.getDisplayCountry());
+                                stage.setScene(scene);
+                                stage.show();
 
-                                System.out.println("Exchange Rate:");
-                                String[] rates = factbook.getExchangeRate(locale.getDisplayCountry());
-                                if(rates != null){
-                                    System.out.println("\t" + rates[1]);
-                                    System.out.println("\t" + rates[0]);
-                                }
+                                // CountryPath countryPath = (CountryPath) evt.getSource();
+                                // Locale      locale      = countryPath.getLocale();
+                                // System.out.println(locale.getDisplayCountry() + " (" + locale.getISO3Country() + ")");
 
-                                System.out.println("Capital:");
-                                System.out.println("\t" + factbook.getCapital(locale.getDisplayCountry()));
+                                // System.out.println("Gov Type: ");
+                                // System.out.println("\t" + factbook.getGovType(locale.getDisplayCountry()));
 
-                                System.out.println("Population:");
-                                System.out.println("\t" + factbook.getPopulation(locale.getDisplayCountry()));
+                                // System.out.println("Head of State: ");
+                                // System.out.println("\t" + factbook.getHeadOfState(locale.getDisplayCountry()));
 
-                                System.out.println("Cities:");
-                                String[] cities = factbook.getCities(locale.getDisplayCountry());
-                                if(cities != null){
-                                    for(int i = 0; i < cities.length; ++i){
-                                        System.out.println("\t" + cities[i]);
-                                    }
-                                } else {
-                                    System.out.println("\tnull");
-                                }
+                                // System.out.println("Languages:");
+                                // String[] a = factbook.getLanguage(locale.getDisplayCountry());
+                                // if(a != null){
+                                //     for(int i = 0; i < a.length; ++i){
+                                //         System.out.println("\t" + a[i]);
+                                //     }
+                                // } else {
+                                //     System.out.println("\tnull");
+                                // }
 
-                                System.out.println("Religions:");
-                                String[] religions = factbook.getReligions(locale.getDisplayCountry());
-                                if(religions != null){
-                                    for(int i = 0; i < religions.length; ++i){
-                                        System.out.println("\t" + religions[i] + "%");
-                                    } 
-                                } else {
-                                    System.out.println("\tnull");
-                                }
+                                // System.out.println("GDP:");
+                                // System.out.println("\t$" + factbook.getGdp(locale.getDisplayCountry()));
 
-                                System.out.println("Imports:");
-                                String[] imports = factbook.getImports(locale.getDisplayCountry());
-                                if(imports != null){
-                                    for(int i = 0; i < imports.length; ++i){
-                                        System.out.println("\t" + imports[i]);
-                                    }
-                                } else {
-                                    System.out.println("\tnull");
-                                }
+                                // System.out.println("Per Capita GDP:");
+                                // System.out.println("\t$" + factbook.getGdpPerCapita(locale.getDisplayCountry()));
 
-                                System.out.println("Exports:");
-                                String[] exports = factbook.getExports(locale.getDisplayCountry());
-                                if(exports != null){
-                                    for(int i = 0; i < exports.length; ++i){
-                                        System.out.println("\t" + exports[i]);
-                                    }
-                                } else {
-                                    System.out.println("\tnull");
-                                }
+                                // System.out.println("Exchange Rate:");
+                                // String[] rates = factbook.getExchangeRate(locale.getDisplayCountry());
+                                // if(rates != null){
+                                //     System.out.println("\t" + rates[1]);
+                                //     System.out.println("\t" + rates[0]);
+                                // }
 
-                                System.out.println("History: ");
-                                System.out.println("\t" + factbook.getHistory(locale.getDisplayCountry()));
+                                // System.out.println("Capital:");
+                                // System.out.println("\t" + factbook.getCapital(locale.getDisplayCountry()));
+
+                                // System.out.println("Population:");
+                                // System.out.println("\t" + factbook.getPopulation(locale.getDisplayCountry()));
+
+                                // System.out.println("Cities:");
+                                // String[] cities = factbook.getCities(locale.getDisplayCountry());
+                                // if(cities != null){
+                                //     for(int i = 0; i < cities.length; ++i){
+                                //         System.out.println("\t" + cities[i]);
+                                //     }
+                                // } else {
+                                //     System.out.println("\tnull");
+                                // }
+
+                                // System.out.println("Religions:");
+                                // String[] religions = factbook.getReligions(locale.getDisplayCountry());
+                                // if(religions != null){
+                                //     for(int i = 0; i < religions.length; ++i){
+                                //         System.out.println("\t" + religions[i] + "%");
+                                //     } 
+                                // } else {
+                                //     System.out.println("\tnull");
+                                // }
+
+                                // System.out.println("Imports:");
+                                // String[] imports = factbook.getImports(locale.getDisplayCountry());
+                                // if(imports != null){
+                                //     for(int i = 0; i < imports.length; ++i){
+                                //         System.out.println("\t" + imports[i]);
+                                //     }
+                                // } else {
+                                //     System.out.println("\tnull");
+                                // }
+
+                                // System.out.println("Exports:");
+                                // String[] exports = factbook.getExports(locale.getDisplayCountry());
+                                // if(exports != null){
+                                //     for(int i = 0; i < exports.length; ++i){
+                                //         System.out.println("\t" + exports[i]);
+                                //     }
+                                // } else {
+                                //     System.out.println("\tnull");
+                                // }
+
+                                // System.out.println("History: ");
+                                // System.out.println("\t" + factbook.getHistory(locale.getDisplayCountry()));
 
                             })
                             .zoomEnabled(true)
