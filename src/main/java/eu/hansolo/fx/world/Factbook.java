@@ -6,14 +6,18 @@ import org.json.simple.parser.JSONParser;
 
 
 import java.io.*;
+import java.net.URL;
 
 class Factbook{ 
 
-private String factbookPath = "/home/mason/Dropbox/School/Semester6/HCI/Project/SourceFiles/worldfx/src/main/java/eu/hansolo/fx/world/factbook.json";
+private String factbookPath = "";
 
 private JSONObject countryData;
 
     public Factbook(){
+        URL url = getClass().getResource("factbook.json");
+        factbookPath = url.getPath();
+
         JSONParser parser = new JSONParser();
         FileReader f = null;
         try {

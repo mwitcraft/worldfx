@@ -19,16 +19,27 @@ package eu.hansolo.fx.world;
 import eu.hansolo.fx.world.World.Resolution;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.text.*;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class Main extends Application {
     private              World         world;
@@ -40,107 +51,33 @@ public class Main extends Application {
         world = WorldBuilder.create()
                             .resolution(Resolution.HI_RES)
                             .mousePressHandler(evt -> {
+                                // Get click information
                                 CountryPath countryPath = (CountryPath) evt.getSource();
                                 Locale locale = countryPath.getLocale();
-                                
-                                VBox root = new VBox();                                
-
+                                String countryName = locale.getDisplayCountry();
+                               
+                                // Intialize popup window
                                 StackPane pane = new StackPane();
-                                
-                                Label label = new Label(locale.getDisplayCountry());
+                                VBox root = new VBox();
+                                Label label = new Label(countryName); //Country Name
+                                root.getChildren().add(label);
 
-                                pane.getChildren().add(label);
+                                // HBox h = new HBox();
+                                // TextField tf = new TextField();
+                                // Button submit = new Button("Submit");
 
-                                root.getChildren().add(pane);
 
-                                Scene scene = new Scene(root, 550, 250);
 
+                                Text t = new Text();
+                                t.wrappingWidthProperty().bind(pane.widthProperty());
+                                root.getChildren().add(t);
+
+                                pane.getChildren().add(root);
                                 Stage stage = new Stage(); 
                                 stage.setTitle(locale.getDisplayCountry());
+                                Scene scene = new Scene(pane, 550, 250);
                                 stage.setScene(scene);
                                 stage.show();
-
-                                // CountryPath countryPath = (CountryPath) evt.getSource();
-                                // Locale      locale      = countryPath.getLocale();
-                                // System.out.println(locale.getDisplayCountry() + " (" + locale.getISO3Country() + ")");
-
-                                // System.out.println("Gov Type: ");
-                                // System.out.println("\t" + factbook.getGovType(locale.getDisplayCountry()));
-
-                                // System.out.println("Head of State: ");
-                                // System.out.println("\t" + factbook.getHeadOfState(locale.getDisplayCountry()));
-
-                                // System.out.println("Languages:");
-                                // String[] a = factbook.getLanguage(locale.getDisplayCountry());
-                                // if(a != null){
-                                //     for(int i = 0; i < a.length; ++i){
-                                //         System.out.println("\t" + a[i]);
-                                //     }
-                                // } else {
-                                //     System.out.println("\tnull");
-                                // }
-
-                                // System.out.println("GDP:");
-                                // System.out.println("\t$" + factbook.getGdp(locale.getDisplayCountry()));
-
-                                // System.out.println("Per Capita GDP:");
-                                // System.out.println("\t$" + factbook.getGdpPerCapita(locale.getDisplayCountry()));
-
-                                // System.out.println("Exchange Rate:");
-                                // String[] rates = factbook.getExchangeRate(locale.getDisplayCountry());
-                                // if(rates != null){
-                                //     System.out.println("\t" + rates[1]);
-                                //     System.out.println("\t" + rates[0]);
-                                // }
-
-                                // System.out.println("Capital:");
-                                // System.out.println("\t" + factbook.getCapital(locale.getDisplayCountry()));
-
-                                // System.out.println("Population:");
-                                // System.out.println("\t" + factbook.getPopulation(locale.getDisplayCountry()));
-
-                                // System.out.println("Cities:");
-                                // String[] cities = factbook.getCities(locale.getDisplayCountry());
-                                // if(cities != null){
-                                //     for(int i = 0; i < cities.length; ++i){
-                                //         System.out.println("\t" + cities[i]);
-                                //     }
-                                // } else {
-                                //     System.out.println("\tnull");
-                                // }
-
-                                // System.out.println("Religions:");
-                                // String[] religions = factbook.getReligions(locale.getDisplayCountry());
-                                // if(religions != null){
-                                //     for(int i = 0; i < religions.length; ++i){
-                                //         System.out.println("\t" + religions[i] + "%");
-                                //     } 
-                                // } else {
-                                //     System.out.println("\tnull");
-                                // }
-
-                                // System.out.println("Imports:");
-                                // String[] imports = factbook.getImports(locale.getDisplayCountry());
-                                // if(imports != null){
-                                //     for(int i = 0; i < imports.length; ++i){
-                                //         System.out.println("\t" + imports[i]);
-                                //     }
-                                // } else {
-                                //     System.out.println("\tnull");
-                                // }
-
-                                // System.out.println("Exports:");
-                                // String[] exports = factbook.getExports(locale.getDisplayCountry());
-                                // if(exports != null){
-                                //     for(int i = 0; i < exports.length; ++i){
-                                //         System.out.println("\t" + exports[i]);
-                                //     }
-                                // } else {
-                                //     System.out.println("\tnull");
-                                // }
-
-                                // System.out.println("History: ");
-                                // System.out.println("\t" + factbook.getHistory(locale.getDisplayCountry()));
 
                             })
                             .zoomEnabled(true)
@@ -149,10 +86,43 @@ public class Main extends Application {
     }
 
     @Override public void start(Stage stage) {
+
+        // Add search bar and search functionality
+        // Setup layout
+        BorderPane border = new BorderPane();
+        HBox h = new HBox();
+        h.setBackground(new Background(new BackgroundFill(world.getBackgroundColor(), CornerRadii.EMPTY, Insets.EMPTY)));
+        h.setAlignment(Pos.CENTER);
+        TextField tf = new TextField();
+        Button submit = new Button("Search");
+        h.getChildren().add(tf);
+        h.getChildren().add(submit);
+        border.setTop(h); // Add search bar and search button at top
+        Map<String, Country> countries = new HashMap<>();
+        for(Country c: Country.values()){
+            Locale l = new Locale("", c.getName());
+            countries.put(l.getDisplayCountry().replaceAll("\\s+", "").toLowerCase(), c);
+        }
+
+        submit.setOnAction(e -> {
+            searchBar(countries, tf);
+        });
+
+        tf.setOnKeyPressed(e -> {
+            if(e.getCode() == KeyCode.ENTER)
+                searchBar(countries, tf);
+        });
+        // 
+
+
+
         StackPane pane = new StackPane(world);
         pane.setBackground(new Background(new BackgroundFill(world.getBackgroundColor(), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        Scene scene = new Scene(pane);
+        // My changes
+        border.setCenter(pane);
+        Scene scene = new Scene(border);
+        // Scene scene = new Scene(pane);
 
         stage.setTitle("World Map");
         stage.setScene(scene);
@@ -165,5 +135,30 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void searchBar(Map<String, Country> countries, TextField tf){
+        try{
+                Country c = countries.get(tf.getText().replaceAll("\\s+", "").toLowerCase());
+                for(CountryPath p : world.countryPaths.get(c.getName())){
+                    p.setFill(Color.RED);
+                }
+        }
+        catch(Exception error){
+                Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                VBox v = new VBox();
+                Text t = new Text();
+                if(tf.getText().isEmpty())
+                    t.setText("Enter Search Term.");
+                else
+                    t.setText("No Country Found. Try Again.");
+                v.getChildren().add(t);
+                Scene dialogScene = new Scene(v, 300, 200);
+                dialog.setScene(dialogScene);
+                dialog.show();
+                System.out.println("No Country Found");
+        }
+        tf.setText("");
     }
 }
