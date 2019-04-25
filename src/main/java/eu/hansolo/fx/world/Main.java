@@ -44,6 +44,7 @@ public class Main extends Application {
 
 
     @Override public void init() {
+    	/*
     	ArrayList<Color> colors = new ArrayList<>();
     	colors.add(Color.ALICEBLUE);
     	colors.add(Color.AZURE);
@@ -53,14 +54,10 @@ public class Main extends Application {
     	colors.add(Color.SILVER);
     	
     	for (Country country : Country.values()) {
-    		/*
-    		double r = RND.nextDouble();
-    		double b = RND.nextDouble();
-    		double g = RND.nextDouble();
-    		*/
     		Color randomColor = colors.get(RND.nextInt(colors.size()));
     		country.setColor(randomColor);
     	}
+    */
     	
         world = WorldBuilder.create()
                             .resolution(Resolution.HI_RES)
@@ -123,6 +120,10 @@ public class Main extends Application {
         		govPane.getChildren().add(text);
         	}
         }
+        else {
+        	text = new Text("No data");
+        	govPane.getChildren().add(text);
+        }
        
         // Add head of state data_array to the pane
         FlowPane headPane = new FlowPane();
@@ -140,6 +141,10 @@ public class Main extends Application {
         		text = new Text(elem);
         		headPane.getChildren().add(text);
         	}
+        }
+        else {
+        	text = new Text("No data");
+        	headPane.getChildren().add(text);
         }
         
         // Add language info to the pane
@@ -159,6 +164,10 @@ public class Main extends Application {
         		langPane.getChildren().add(text);
         	}
         }
+        else {
+        	text = new Text("No data");
+        	langPane.getChildren().add(text);
+        }
         
         // Add GDP info to the pane
         FlowPane gdpPane = new FlowPane();
@@ -170,8 +179,14 @@ public class Main extends Application {
         gdpPane.getChildren().add(subHeader);
         
         String data = factbook.getGdp(locale.getDisplayCountry());
-        text = new Text("$" + data);
-        gdpPane.getChildren().add(text);
+        if (data != null) {
+        	text = new Text("$" + data);
+        	gdpPane.getChildren().add(text);
+        }
+        else {
+        	text = new Text("No data");
+        	gdpPane.getChildren().add(text);
+        }
         
         // Add GDP per capita info to the pane
         FlowPane gdppcPane = new FlowPane();
@@ -183,8 +198,14 @@ public class Main extends Application {
         gdppcPane.getChildren().add(subHeader);
         
         data = factbook.getGdpPerCapita(locale.getDisplayCountry());
-        text = new Text("$" + data);
-        gdppcPane.getChildren().add(text);
+        if (data != null) {
+        	text = new Text("$" + data);
+        	gdppcPane.getChildren().add(text);
+        }
+        else {
+        	text = new Text("No data");
+        	gdppcPane.getChildren().add(text);
+        }
         
         // Add exchange rate info to the pane
         FlowPane exchangePane = new FlowPane();
@@ -202,6 +223,10 @@ public class Main extends Application {
         		exchangePane.getChildren().add(text);
         	}
         }
+        else {
+        	text = new Text("No data");
+        	exchangePane.getChildren().add(text);
+        }
         
         // Add capital info to the pane
         FlowPane capitalPane = new FlowPane();
@@ -213,8 +238,14 @@ public class Main extends Application {
         capitalPane.getChildren().add(subHeader);
         
         data = factbook.getCapital(locale.getDisplayCountry());
-        text = new Text(data);
-        capitalPane.getChildren().add(text);
+        if (data != null) {
+        	text = new Text(data);
+        	capitalPane.getChildren().add(text);
+        }
+        else {
+        	text = new Text("No data");
+        	capitalPane.getChildren().add(text);
+        }
         
         // Add pop info to the pane
         FlowPane popPane = new FlowPane();
@@ -226,8 +257,14 @@ public class Main extends Application {
         popPane.getChildren().add(subHeader);
         
         data = factbook.getPopulation(locale.getDisplayCountry());
-        text = new Text(data);
-        popPane.getChildren().add(text);
+        if (data != null) {
+        	text = new Text(data);
+        	popPane.getChildren().add(text);
+        }
+        else {
+        	text = new Text("No data");
+        	popPane.getChildren().add(text);
+        }
         
         // Add city info to the pane
         FlowPane cityPane = new FlowPane();
@@ -244,6 +281,10 @@ public class Main extends Application {
         		text = new Text(elem);
         		cityPane.getChildren().add(text);
         	}
+        }
+        else {
+        	text = new Text("No data");
+        	cityPane.getChildren().add(text);
         }
         
         // Add religion info to the pane
@@ -262,6 +303,10 @@ public class Main extends Application {
         		religionPane.getChildren().add(text);
         	}
         }
+        else {
+        	text = new Text("No data");
+        	religionPane.getChildren().add(text);
+        }
         
         // Add imports info to the pane
         FlowPane importsPane = new FlowPane();
@@ -278,6 +323,10 @@ public class Main extends Application {
         		text = new Text(elem);
         		importsPane.getChildren().add(text);
         	}
+        }
+        else {
+        	text = new Text("No data");
+        	importsPane.getChildren().add(text);
         }
         
         // Add imports info to the pane
@@ -296,6 +345,10 @@ public class Main extends Application {
         		exportsPane.getChildren().add(text);
         	}
         }
+        else {
+        	text = new Text("No data");
+        	exportsPane.getChildren().add(text);
+        }
         
         // Add history info to the pane
         FlowPane histPane = new FlowPane();
@@ -306,6 +359,7 @@ public class Main extends Application {
         subHeader.setStyle("-fx-font-weight: bold");
         histPane.getChildren().add(subHeader);
         
+        
         data_array = factbook.getHistory(locale.getDisplayCountry()).split(" ");
         if (data_array != null) {
         	for(String elem:data_array) {
@@ -313,7 +367,11 @@ public class Main extends Application {
         		histPane.getChildren().add(text);
         	}
         }
-        
+        else {
+        	text = new Text("No data");
+        	histPane.getChildren().add(text);
+        }
+          
        
         // Add flow panes to the vertical box
         vbox.getChildren().addAll(govPane, headPane, langPane, gdpPane, gdppcPane, exchangePane, capitalPane,

@@ -334,8 +334,9 @@ private JSONObject countryData;
             country = (JSONObject)country.get("data");
             country = (JSONObject)country.get("introduction");
             String history = (String)country.get("background");
+            String finalHistory = history.replaceAll("\n", "");
 
-            return history;
+            return finalHistory;
         } catch(Exception e){
             return null;
         }
