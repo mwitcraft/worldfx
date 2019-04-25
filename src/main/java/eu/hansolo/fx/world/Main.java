@@ -104,19 +104,19 @@ public class Main extends Application {
     }
     
     public static void setCountryColors() {
-    	// Get light blue and gray colors
     	ArrayList<Color> colors = new ArrayList<>();
-    	colors.add(Color.ALICEBLUE);
-    	colors.add(Color.AZURE);
-    	colors.add(Color.LIGHTCYAN);
-    	colors.add(Color.LIGHTBLUE);
-    	colors.add(Color.LIGHTSTEELBLUE);
-    	colors.add(Color.LIGHTSLATEGRAY);
-    	colors.add(Color.PALETURQUOISE);
-    	colors.add(Color.POWDERBLUE);
-    	colors.add(Color.SILVER);
+	    
+	// Make the countries shades of blue    
+    	colors.add(Color.web("#21618c",1.0));
+    	colors.add(Color.web("#2874a6",1.0));
+    	colors.add(Color.web("#2e86c1",1.0));
+    	colors.add(Color.web("#3498db",1.0));
+    	colors.add(Color.web("#5dade2",1.0));
+    	colors.add(Color.web("#85c1e9",1.0));
+    	colors.add(Color.web("#aed6f1",1.0));
+    	colors.add(Color.web("#d6eaf8",1.0));
     	
-    	// Randomly assign colors to countries
+    	// Randomly assign the colors to countries
     	for (Country country : Country.values()) {
     		Color randomColor = colors.get(RND.nextInt(colors.size()));
     		country.setColor(randomColor);
