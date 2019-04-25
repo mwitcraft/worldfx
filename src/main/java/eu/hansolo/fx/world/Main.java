@@ -12,14 +12,25 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * 
+ * Modified by Group 22 World Explorer for a project in Human-Computer Interaction Spring 2019 at the University of Oklahoma. 
+ * 
+ * The init() method was modified to set country colors with the added method setCountryColors().
+ * 
+ * The mousePressHandler() was modified to send information from the world factbook JSON parser class Factbook to a window.
+ * The added method populateCountryWindow() is called to get the country information.
  */
+
 
 package eu.hansolo.fx.world;
 
 import eu.hansolo.fx.world.World.Resolution;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -30,7 +41,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -38,40 +49,34 @@ import java.util.Random;
 
 public class Main extends Application {
 	private static final Random RND = new Random();
-    private              World         world;
+    private World  world;
+    private static Factbook  factbook = new Factbook();
 
-    //private static factbook = new Factbook();
-
-
+    
     @Override public void init() {
-    	/*
-    	ArrayList<Color> colors = new ArrayList<>();
-    	colors.add(Color.ALICEBLUE);
-    	colors.add(Color.AZURE);
-    	colors.add(Color.LIGHTCYAN);
-    	colors.add(Color.LIGHTSTEELBLUE);
-    	colors.add(Color.LIGHTSLATEGRAY);
-    	colors.add(Color.SILVER);
     	
-    	for (Country country : Country.values()) {
-    		Color randomColor = colors.get(RND.nextInt(colors.size()));
-    		country.setColor(randomColor);
-    	}
-    */
+    	// Set the colors of the country
+    	setCountryColors();
     	
         world = WorldBuilder.create()
                             .resolution(Resolution.HI_RES)
                             .mousePressHandler(evt -> {
-                                CountryPath countryPath = (CountryPath) evt.getSource();
+                            	// Get the country that is currently clicked
+                            	CountryPath countryPath = (CountryPath) evt.getSource();
                                 Locale locale = countryPath.getLocale();
                                 
-                                // Populate the country pane
-                                VBox root = populateCountryPane(countryPath, locale); 
-                                Scene scene = new Scene(root, 600, 800);
-
+                                // Make country information window
+                                VBox vbox = populateCountryWindow(countryPath, locale); 
+                                
+                                // Add country information window to a scroll pane
+                                ScrollPane scrollPane = new ScrollPane(vbox);
+                                scrollPane.setFitToHeight(true);
+                                
+                                Scene scene = new Scene(scrollPane, 500, 1000);
                                 Stage stage = new Stage(); 
-                                stage.setTitle(locale.getDisplayCountry());
                                 stage.setScene(scene);
+                                stage.setTitle(locale.getDisplayCountry());
+                                
                                 stage.show();
                             })
                             .zoomEnabled(true)
@@ -98,21 +103,41 @@ public class Main extends Application {
         launch(args);
     }
     
-    public static VBox populateCountryPane(CountryPath countryPath, Locale locale) {
-    	Factbook factbook = new Factbook();
-    	VBox vbox = new VBox();
-    	Text subHeader;
-        Text text;
+    public static void setCountryColors() {
+    	// Get light blue and gray colors
+    	ArrayList<Color> colors = new ArrayList<>();
+    	colors.add(Color.ALICEBLUE);
+    	colors.add(Color.AZURE);
+    	colors.add(Color.LIGHTCYAN);
+    	colors.add(Color.LIGHTBLUE);
+    	colors.add(Color.LIGHTSTEELBLUE);
+    	colors.add(Color.LIGHTSLATEGRAY);
+    	colors.add(Color.PALETURQUOISE);
+    	colors.add(Color.POWDERBLUE);
+    	colors.add(Color.SILVER);
+    	
+    	// Randomly assign colors to countries
+    	for (Country country : Country.values()) {
+    		Color randomColor = colors.get(RND.nextInt(colors.size()));
+    		country.setColor(randomColor);
+    	}
+    }
+    
+    public static VBox populateCountryWindow(CountryPath countryPath, Locale locale) {
+    	VBox vbox = new VBox();             // Box to contain the flow panes with country information
+    	
+    	Text subHeader;                     // Sub headers for the data 
+        Text text;                          // Text to go under the subheaders
         
         // Add government type data_array to the pane
         FlowPane govPane = new FlowPane();
         govPane.setHgap(4);
-        govPane.setVgap(4);
       
         subHeader = new Text("Government Type:");
         subHeader.setStyle("-fx-font-weight: bold");
         govPane.getChildren().add(subHeader);
         
+        // Split on spaces so each word is added to the flow pane. Then, the words will move with pane resizing.
         String [] data_array = factbook.getGovType(locale.getDisplayCountry()).split(" ");
         if (data_array != null) {
         	for(String elem:data_array) {
@@ -127,14 +152,13 @@ public class Main extends Application {
        
         // Add head of state data_array to the pane
         FlowPane headPane = new FlowPane();
-        headPane.setPrefWrapLength(300); 
         headPane.setHgap(4);
-        headPane.setVgap(4);
         
         subHeader = new Text("Head of State:");
         subHeader.setStyle("-fx-font-weight: bold");
         headPane.getChildren().add(subHeader);
         
+        // Split on spaces so each word is added to the flow pane
         data_array = factbook.getHeadOfState(locale.getDisplayCountry()).split(" ");
         if (data_array != null) {
         	for(String elem:data_array) {
@@ -148,10 +172,7 @@ public class Main extends Application {
         }
         
         // Add language info to the pane
-        FlowPane langPane = new FlowPane();
-        langPane.setPrefWrapLength(300); 
-        langPane.setHgap(4);
-        langPane.setVgap(4);
+        VBox langPane = new VBox();
                         
         subHeader = new Text("Languages:");
         subHeader.setStyle("-fx-font-weight: bold");
@@ -172,7 +193,6 @@ public class Main extends Application {
         // Add GDP info to the pane
         FlowPane gdpPane = new FlowPane();
         gdpPane.setHgap(4);
-        gdpPane.setVgap(4);
                         
         subHeader = new Text("GDP:");
         subHeader.setStyle("-fx-font-weight: bold");
@@ -191,7 +211,6 @@ public class Main extends Application {
         // Add GDP per capita info to the pane
         FlowPane gdppcPane = new FlowPane();
         gdppcPane.setHgap(4);
-        gdppcPane.setVgap(4);
                         
         subHeader = new Text("GDP per capita:");
         subHeader.setStyle("-fx-font-weight: bold");
@@ -210,12 +229,12 @@ public class Main extends Application {
         // Add exchange rate info to the pane
         FlowPane exchangePane = new FlowPane();
         exchangePane.setHgap(4);
-        exchangePane.setVgap(4);
                         
         subHeader = new Text("Exchange Rate:");
         subHeader.setStyle("-fx-font-weight: bold");
         exchangePane.getChildren().add(subHeader);
         
+        // Split on spaces so each word is added to the flow pane
         data_array = factbook.getExchangeRate(locale.getDisplayCountry()); 
         if (data_array != null) {
         	for(String elem:data_array) {
@@ -231,7 +250,6 @@ public class Main extends Application {
         // Add capital info to the pane
         FlowPane capitalPane = new FlowPane();
         capitalPane.setHgap(4);
-        capitalPane.setVgap(4);
                         
         subHeader = new Text("Capital:");
         subHeader.setStyle("-fx-font-weight: bold");
@@ -250,7 +268,6 @@ public class Main extends Application {
         // Add pop info to the pane
         FlowPane popPane = new FlowPane();
         popPane.setHgap(4);
-        popPane.setVgap(4);
                         
         subHeader = new Text("Population:");
         subHeader.setStyle("-fx-font-weight: bold");
@@ -267,11 +284,9 @@ public class Main extends Application {
         }
         
         // Add city info to the pane
-        FlowPane cityPane = new FlowPane();
-        cityPane.setHgap(4);
-        cityPane.setVgap(4);
+        VBox cityPane = new VBox();
                         
-        subHeader = new Text("Cities:");
+        subHeader = new Text("Largest Cities (by population):");
         subHeader.setStyle("-fx-font-weight: bold");
         cityPane.getChildren().add(subHeader);
         
@@ -288,9 +303,7 @@ public class Main extends Application {
         }
         
         // Add religion info to the pane
-        FlowPane religionPane = new FlowPane();
-        religionPane.setHgap(4);
-        religionPane.setVgap(4);
+        VBox religionPane = new VBox();
                         
         subHeader = new Text("Religions:");
         subHeader.setStyle("-fx-font-weight: bold");
@@ -309,9 +322,7 @@ public class Main extends Application {
         }
         
         // Add imports info to the pane
-        FlowPane importsPane = new FlowPane();
-        importsPane.setHgap(4);
-        importsPane.setVgap(4);
+        VBox importsPane = new VBox();
                         
         subHeader = new Text("Imports:");
         subHeader.setStyle("-fx-font-weight: bold");
@@ -330,9 +341,7 @@ public class Main extends Application {
         }
         
         // Add imports info to the pane
-        FlowPane exportsPane = new FlowPane();
-        exportsPane.setHgap(4);
-        exportsPane.setVgap(4);
+        VBox exportsPane = new VBox();
                         
         subHeader = new Text("Exports:");
         subHeader.setStyle("-fx-font-weight: bold");
@@ -359,7 +368,7 @@ public class Main extends Application {
         subHeader.setStyle("-fx-font-weight: bold");
         histPane.getChildren().add(subHeader);
         
-        
+        // Split on spaces so each word is added to the flow pane
         data_array = factbook.getHistory(locale.getDisplayCountry()).split(" ");
         if (data_array != null) {
         	for(String elem:data_array) {
@@ -371,12 +380,11 @@ public class Main extends Application {
         	text = new Text("No data");
         	histPane.getChildren().add(text);
         }
-          
-       
-        // Add flow panes to the vertical box
+      
+        // Add flow panes to the vertical box/*
         vbox.getChildren().addAll(govPane, headPane, langPane, gdpPane, gdppcPane, exchangePane, capitalPane,
         		popPane, cityPane, religionPane, importsPane, exportsPane, histPane);
-    	
+             
         return vbox;
     }
 }

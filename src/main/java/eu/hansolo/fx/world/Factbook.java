@@ -1,3 +1,9 @@
+/*
+ * Added to worldFX by Group 22 World Explorer for a project in Human-Computer Interaction Spring 2019 at the University of Oklahoma. 
+ *
+ * Factbook parses the factbook JSON file for country information.
+ */
+
 package eu.hansolo.fx.world;
 
 import org.json.simple.JSONObject;
