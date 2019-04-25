@@ -114,7 +114,6 @@ public class Main extends Application {
     	colors.add(Color.web("#5dade2",1.0));
     	colors.add(Color.web("#85c1e9",1.0));
     	colors.add(Color.web("#aed6f1",1.0));
-    	colors.add(Color.web("#d6eaf8",1.0));
     	
     	// Randomly assign the colors to countries
     	for (Country country : Country.values()) {
