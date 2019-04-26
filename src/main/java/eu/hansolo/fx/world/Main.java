@@ -67,10 +67,6 @@ public class Main extends Application {
             Label label = new Label(countryName); // Country Name
             root.getChildren().add(label);
 
-            // HBox h = new HBox();
-            // TextField tf = new TextField();
-            // Button submit = new Button("Submit");
-
             Text t = new Text();
             t.wrappingWidthProperty().bind(pane.widthProperty());
             root.getChildren().add(t);
@@ -97,21 +93,15 @@ public class Main extends Application {
         h.setAlignment(Pos.CENTER);
         TextField tf = new TextField();
         h.getChildren().add(tf);
-        border.setTop(h); // Add search bar and search button at top
+        border.setTop(h); // Add search bar at top
+        // Create a map of countries so I can easily access it later
         Map<String, Country> countries = new HashMap<>();
         for (Country c : Country.values()) {
             Locale l = new Locale("", c.getName());
-            countries.put(l.getDisplayCountry().toLowerCase().replaceAll("\\s+", "_"), c);
+            countries.put(l.getDisplayCountry().toLowerCase().replaceAll("\\s+", "_"), c); // Replace whitespace with underscores
         }
 
-        // tf.setOnKeyPressed(e -> {
-        //     if (e.getCode() == KeyCode.ENTER)
-        //         searchBar(countries, tf);
-        // });
-        //
-        // tf.onKeyReleasedProperty(e -> {
-        //     searchBar(countries, tf);
-        // });
+        // Call the search bar function when any key is released
         tf.setOnKeyReleased(e -> {
             searchBar(countries, tf);
         });
@@ -120,10 +110,8 @@ public class Main extends Application {
         pane.setBackground(
                 new Background(new BackgroundFill(world.getBackgroundColor(), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        // My changes
         border.setCenter(pane);
         Scene scene = new Scene(border);
-        // Scene scene = new Scene(pane);
 
         stage.setTitle("World Map");
         stage.setScene(scene);
@@ -139,7 +127,9 @@ public class Main extends Application {
         launch(args);
     }
 
+    // Function to make the search bar work
     public void searchBar(Map<String, Country> countries, TextField tf) {
+        // Empty search bar, revert everything back to original colors
         if(tf.getText().length() < 1){
             for(Country c : countries.values()){
                 try {
@@ -154,24 +144,23 @@ public class Main extends Application {
             return;
         }
 
+        // Find countries that match what is being typed
         ArrayList<String> keys = new ArrayList<>();
-        String entry = tf.getText().toLowerCase().replaceAll("\\s+", "_");
+        String entry = tf.getText().toLowerCase().replaceAll("\\s+", "_"); // Replace whitespace with underscores
         for (String key : countries.keySet()) {
             String keyTest = "";
-            if(!(key.length() < entry.length()))
-                keyTest = key.substring(0, entry.length());
-            if (keyTest.equals(entry)) {
-                // System.out.println(keyTest);
-                // System.out.println(entry);
-                // System.out.println("\t" + key);
-                keys.add(key);
+            if(!(key.length() < entry.length())) // If the search term is longer than the country name, just skip it
+                keyTest = key.substring(0, entry.length()); // If the first 'x' letters of the country name where 'x' is entry.length
+            if (keyTest.equals(entry)) { // If the substring matches the search term
+                keys.add(key); // Add it to the list
             }
         }
-        for(String key : keys){
-            Country c = countries.get(key);
+        for(String key : keys){ // Step through the list of matches
+            Country c = countries.get(key); // Get the country corresponding to the key
             try {
-                for(CountryPath p : world.countryPaths.get(c.getName()))
-                    p.setFill(Color.RED);
+                for(CountryPath p : world.countryPaths.get(c.getName())){ // Loop through the country paths (that's how you dynamically color)
+                    p.setFill(Color.RED); // Color red
+                }
             } catch (Exception e) {
                 //TODO: handle exception
                 // For some reason country code "KV" throws error
@@ -179,13 +168,16 @@ public class Main extends Application {
             }
         }
 
+        // Reset everything else to their default colors
         for(String key : countries.keySet()){
-            if(!keys.contains(key)){
+            if(!keys.contains(key)){ // Skip matching terms
                 Country c = countries.get(key);
                 if(c != null){
                     try {
-                        for(CountryPath p : world.countryPaths.get(c.getName()))
-                            p.setFill(c.getColor());
+                        for(CountryPath p : world.countryPaths.get(c.getName())){
+                            p.setFill(c.getColor()); // Reset color
+                        }
+
                     } catch (Exception e) {
                         //TODO: handle exception
                         // For some reason country code "KV" throws error
