@@ -104,17 +104,17 @@ public class Main extends Application {
             countries.put(l.getDisplayCountry().toLowerCase().replaceAll("\\s+", "_"), c);
         }
 
-        for(String key : countries.keySet()){
-            if(key.equals("united_states")){
-                System.out.println("x");
-            }
-        }
-
-        tf.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ENTER)
-                searchBar(countries, tf);
-        });
+        // tf.setOnKeyPressed(e -> {
+        //     if (e.getCode() == KeyCode.ENTER)
+        //         searchBar(countries, tf);
+        // });
         //
+        // tf.onKeyReleasedProperty(e -> {
+        //     searchBar(countries, tf);
+        // });
+        tf.setOnKeyReleased(e -> {
+            searchBar(countries, tf);
+        });
 
         StackPane pane = new StackPane(world);
         pane.setBackground(
