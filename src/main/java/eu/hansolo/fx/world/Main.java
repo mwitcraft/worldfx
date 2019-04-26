@@ -26,8 +26,6 @@ package eu.hansolo.fx.world;
 
 import eu.hansolo.fx.world.World.Resolution;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -39,22 +37,36 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
+
+
+//import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+//import javafx.scene.control.Button;
+//import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.text.*;
+//import javafx.scene.input.KeyCode;
+//import javafx.scene.text.*;
+
 
 import java.util.ArrayList;
-import java.util.Collection;
+//import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+//import java.util.Iterator;
+//import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import javafx.scene.layout.FlowPane;
+//import javafx.scene.layout.VBox;
+//import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+//import javafx.stage.Stage;
+import javafx.scene.control.ScrollPane;
 
+
+
+import java.util.Random;
+
+/*
 public class Main extends Application {
     private World world;
 
@@ -89,18 +101,8 @@ public class Main extends Application {
             stage.show();
 
         }).zoomEnabled(true).selectionEnabled(true).build();
-=======
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.scene.control.ScrollPane;
 
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Random;
+*/
 
 public class Main extends Application {
 	private static final Random RND = new Random();
@@ -245,7 +247,7 @@ public class Main extends Application {
             }
         }
     }
-}
+
 
     
     public static void setCountryColors() {
