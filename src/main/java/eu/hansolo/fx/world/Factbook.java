@@ -1,3 +1,9 @@
+/*
+ * Added to worldFX by Group 22 World Explorer for a project in Human-Computer Interaction Spring 2019 at the University of Oklahoma. 
+ *
+ * Factbook parses the factbook JSON file for country information.
+ */
+
 package eu.hansolo.fx.world;
 
 import org.json.simple.JSONObject;
@@ -333,8 +339,9 @@ private JSONObject countryData;
             country = (JSONObject)country.get("data");
             country = (JSONObject)country.get("introduction");
             String history = (String)country.get("background");
+            String finalHistory = history.replaceAll("\n", "");
 
-            return history;
+            return finalHistory;
         } catch(Exception e){
             return null;
         }
