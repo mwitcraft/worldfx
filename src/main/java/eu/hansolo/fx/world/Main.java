@@ -96,19 +96,19 @@ public class Main extends Application {
                 new Background(new BackgroundFill(world.getBackgroundColor(), CornerRadii.EMPTY, Insets.EMPTY)));
         h.setAlignment(Pos.CENTER);
         TextField tf = new TextField();
-        Button submit = new Button("Search");
         h.getChildren().add(tf);
-        h.getChildren().add(submit);
         border.setTop(h); // Add search bar and search button at top
         Map<String, Country> countries = new HashMap<>();
         for (Country c : Country.values()) {
             Locale l = new Locale("", c.getName());
-            countries.put(l.getDisplayCountry().toLowerCase(), c);
+            countries.put(l.getDisplayCountry().toLowerCase().replaceAll("\\s+", "_"), c);
         }
 
-        submit.setOnAction(e -> {
-            searchBar(countries, tf);
-        });
+        for(String key : countries.keySet()){
+            if(key.equals("united_states")){
+                System.out.println("x");
+            }
+        }
 
         tf.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER)
@@ -141,128 +141,58 @@ public class Main extends Application {
 
     public void searchBar(Map<String, Country> countries, TextField tf) {
         if(tf.getText().length() < 1){
+            for(Country c : countries.values()){
+                try {
+                    for(CountryPath p : world.countryPaths.get(c.getName()))
+                        p.setFill(c.getColor());
+                } catch (Exception e) {
+                    //TODO: handle exception
+                    // For some reason country code "KV" throws error
+                    // Fix Later
+                }
+            }
             return;
-            // Country c = countries.get(key.replaceAll("\\s", "").toLowerCase());
-            // if(c != null){
-            // for(CountryPath p : world.countryPaths.get(c.getName()))
-            //     p.setFill(Color.WHITE);
-            // }
         }
-
-        System.out.println(tf.getText());
-        if(tf.getText().equals("united states")){
-            System.out.println("What in the hell");
-        }
-        // System.out.println("Length");
-        // System.out.println(tf.getText().length());
 
         ArrayList<String> keys = new ArrayList<>();
-        String entry = tf.getText().replaceAll(" ", "_").toLowerCase();
-        String keyTest = "!";
+        String entry = tf.getText().toLowerCase().replaceAll("\\s+", "_");
         for (String key : countries.keySet()) {
-            try {
-                if(!(key.length() < entry.length()))
-                    keyTest = key.substring(0, entry.length());
-                // System.out.println(keyTest + " : " + entry);
-            } catch (Exception e) {
-                System.out.println("Hello");
-            }
-            try {
-                if (keyTest.equals(entry)) {
-                    keys.add(key);
-                }
-            } catch (Exception e) {
-
+            String keyTest = "";
+            if(!(key.length() < entry.length()))
+                keyTest = key.substring(0, entry.length());
+            if (keyTest.equals(entry)) {
+                // System.out.println(keyTest);
+                // System.out.println(entry);
+                // System.out.println("\t" + key);
+                keys.add(key);
             }
         }
-        // for(String key : countries.keySet()){
-        // Country c = countries.get(key.replaceAll("\\s", "").toLowerCase());
-        // for(CountryPath p : world.countryPaths.get(c.getName()))
-        // p.setFill(c.getColor());
-        // }
-        try {
-            // for(String key : countries.keySet()){
-            // Country c = countries.get(key.replaceAll("\\s", "").toLowerCase());
-            // for(CountryPath p : world.countryPaths.get(c.getName()))
-            // p.setFill(c.getColor());
-            // }
-
-            // Iterator<List<CountryPath>> iterPaths = world.countryPaths.values().iterator();
-            // int i = 0;
-            // while(iterPaths.hasNext()){
-            //     CountryPath cp = iterPaths.next().get(i);
-            //     cp.setFill(Color.WHITE);
-            // }
-    }
-        catch(Exception e){
-
-        }
-
-        try{
         for(String key : keys){
             Country c = countries.get(key);
-            for(CountryPath p : world.countryPaths.get(c.getName())){
-                // System.out.println(c.getName());
-                if(tf.getText().equals("united states")){
-                    System.out.println("Entry: " + entry);
-                    System.out.println("Key : " + key);
-                    System.out.println("KeySub : " + key.substring(0, entry.length()));
-                    System.out.println("C name : " + c.getName());
-                }
-
-                p.setFill(Color.RED);
+            try {
+                for(CountryPath p : world.countryPaths.get(c.getName()))
+                    p.setFill(Color.RED);
+            } catch (Exception e) {
+                //TODO: handle exception
+                // For some reason country code "KV" throws error
+                // Fix Later
             }
-        }
-        } catch(Exception e){
-                if(tf.getText().equals("united states")){
-                    System.out.println("Here");
-                }
         }
 
         for(String key : countries.keySet()){
-            if(keys.contains(key)){
-
-            } else {
+            if(!keys.contains(key)){
                 Country c = countries.get(key);
-                try {
                 if(c != null){
-                for(CountryPath p : world.countryPaths.get(c.getName()))
-                    p.setFill(Color.WHITE);
-                }
-                    
-                } catch (Exception e) {
-                    // System.out.println("Here");
-                    // System.out.println(c.getName());
+                    try {
+                        for(CountryPath p : world.countryPaths.get(c.getName()))
+                            p.setFill(c.getColor());
+                    } catch (Exception e) {
+                        //TODO: handle exception
+                        // For some reason country code "KV" throws error
+                        // Fix Later
+                    }
                 }
             }
         }
-
-        // for(CountryPath p : world.countryPaths.values()){
-
-        // }
-        
-
-        // try{
-        //         Country c = countries.get(tf.getText().replaceAll("\\s+", "").toLowerCase());
-        //         for(CountryPath p : world.countryPaths.get(c.getName())){
-        //             p.setFill(Color.RED);
-        //         }
-        // }
-        // catch(Exception error){
-        //         Stage dialog = new Stage();
-        //         dialog.initModality(Modality.APPLICATION_MODAL);
-        //         VBox v = new VBox();
-        //         Text t = new Text();
-        //         if(tf.getText().isEmpty())
-        //             t.setText("Enter Search Term.");
-        //         else
-        //             t.setText("No Country Found. Try Again.");
-        //         v.getChildren().add(t);
-        //         Scene dialogScene = new Scene(v, 300, 200);
-        //         dialog.setScene(dialogScene);
-        //         dialog.show();
-        //         System.out.println("No Country Found");
-        // }
-        // tf.setText("");
     }
 }
