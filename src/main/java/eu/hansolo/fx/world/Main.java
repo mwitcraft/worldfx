@@ -37,61 +37,63 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 public class Main extends Application {
-    private              World         world;
+    private World world;
 
     private Factbook factbook = new Factbook();
 
+    @Override
+    public void init() {
+        for (Country c : Country.values())
+            c.setColor(Color.WHITE);
 
-    @Override public void init() {
-        world = WorldBuilder.create()
-                            .resolution(Resolution.HI_RES)
-                            .mousePressHandler(evt -> {
-                                // Get click information
-                                CountryPath countryPath = (CountryPath) evt.getSource();
-                                Locale locale = countryPath.getLocale();
-                                String countryName = locale.getDisplayCountry();
-                               
-                                // Intialize popup window
-                                StackPane pane = new StackPane();
-                                VBox root = new VBox();
-                                Label label = new Label(countryName); //Country Name
-                                root.getChildren().add(label);
+        world = WorldBuilder.create().resolution(Resolution.HI_RES).mousePressHandler(evt -> {
+            // Get click information
+            CountryPath countryPath = (CountryPath) evt.getSource();
+            Locale locale = countryPath.getLocale();
+            String countryName = locale.getDisplayCountry();
 
-                                // HBox h = new HBox();
-                                // TextField tf = new TextField();
-                                // Button submit = new Button("Submit");
+            // Intialize popup window
+            StackPane pane = new StackPane();
+            VBox root = new VBox();
+            Label label = new Label(countryName); // Country Name
+            root.getChildren().add(label);
 
+            // HBox h = new HBox();
+            // TextField tf = new TextField();
+            // Button submit = new Button("Submit");
 
+            Text t = new Text();
+            t.wrappingWidthProperty().bind(pane.widthProperty());
+            root.getChildren().add(t);
 
-                                Text t = new Text();
-                                t.wrappingWidthProperty().bind(pane.widthProperty());
-                                root.getChildren().add(t);
+            pane.getChildren().add(root);
+            Stage stage = new Stage();
+            stage.setTitle(locale.getDisplayCountry());
+            Scene scene = new Scene(pane, 550, 250);
+            stage.setScene(scene);
+            stage.show();
 
-                                pane.getChildren().add(root);
-                                Stage stage = new Stage(); 
-                                stage.setTitle(locale.getDisplayCountry());
-                                Scene scene = new Scene(pane, 550, 250);
-                                stage.setScene(scene);
-                                stage.show();
-
-                            })
-                            .zoomEnabled(true)
-                            .selectionEnabled(true)
-                            .build();
+        }).zoomEnabled(true).selectionEnabled(true).build();
     }
 
-    @Override public void start(Stage stage) {
+    @Override
+    public void start(Stage stage) {
 
         // Add search bar and search functionality
         // Setup layout
         BorderPane border = new BorderPane();
         HBox h = new HBox();
-        h.setBackground(new Background(new BackgroundFill(world.getBackgroundColor(), CornerRadii.EMPTY, Insets.EMPTY)));
+        h.setBackground(
+                new Background(new BackgroundFill(world.getBackgroundColor(), CornerRadii.EMPTY, Insets.EMPTY)));
         h.setAlignment(Pos.CENTER);
         TextField tf = new TextField();
         Button submit = new Button("Search");
@@ -99,9 +101,9 @@ public class Main extends Application {
         h.getChildren().add(submit);
         border.setTop(h); // Add search bar and search button at top
         Map<String, Country> countries = new HashMap<>();
-        for(Country c: Country.values()){
+        for (Country c : Country.values()) {
             Locale l = new Locale("", c.getName());
-            countries.put(l.getDisplayCountry().replaceAll("\\s+", "").toLowerCase(), c);
+            countries.put(l.getDisplayCountry().toLowerCase(), c);
         }
 
         submit.setOnAction(e -> {
@@ -109,15 +111,14 @@ public class Main extends Application {
         });
 
         tf.setOnKeyPressed(e -> {
-            if(e.getCode() == KeyCode.ENTER)
+            if (e.getCode() == KeyCode.ENTER)
                 searchBar(countries, tf);
         });
-        // 
-
-
+        //
 
         StackPane pane = new StackPane(world);
-        pane.setBackground(new Background(new BackgroundFill(world.getBackgroundColor(), CornerRadii.EMPTY, Insets.EMPTY)));
+        pane.setBackground(
+                new Background(new BackgroundFill(world.getBackgroundColor(), CornerRadii.EMPTY, Insets.EMPTY)));
 
         // My changes
         border.setCenter(pane);
@@ -129,7 +130,8 @@ public class Main extends Application {
         stage.show();
     }
 
-    @Override public void stop() {
+    @Override
+    public void stop() {
         System.exit(0);
     }
 
@@ -137,28 +139,130 @@ public class Main extends Application {
         launch(args);
     }
 
-    public void searchBar(Map<String, Country> countries, TextField tf){
+    public void searchBar(Map<String, Country> countries, TextField tf) {
+        if(tf.getText().length() < 1){
+            return;
+            // Country c = countries.get(key.replaceAll("\\s", "").toLowerCase());
+            // if(c != null){
+            // for(CountryPath p : world.countryPaths.get(c.getName()))
+            //     p.setFill(Color.WHITE);
+            // }
+        }
+
+        System.out.println(tf.getText());
+        if(tf.getText().equals("united states")){
+            System.out.println("What in the hell");
+        }
+        // System.out.println("Length");
+        // System.out.println(tf.getText().length());
+
+        ArrayList<String> keys = new ArrayList<>();
+        String entry = tf.getText().replaceAll(" ", "_").toLowerCase();
+        String keyTest = "!";
+        for (String key : countries.keySet()) {
+            try {
+                if(!(key.length() < entry.length()))
+                    keyTest = key.substring(0, entry.length());
+                // System.out.println(keyTest + " : " + entry);
+            } catch (Exception e) {
+                System.out.println("Hello");
+            }
+            try {
+                if (keyTest.equals(entry)) {
+                    keys.add(key);
+                }
+            } catch (Exception e) {
+
+            }
+        }
+        // for(String key : countries.keySet()){
+        // Country c = countries.get(key.replaceAll("\\s", "").toLowerCase());
+        // for(CountryPath p : world.countryPaths.get(c.getName()))
+        // p.setFill(c.getColor());
+        // }
+        try {
+            // for(String key : countries.keySet()){
+            // Country c = countries.get(key.replaceAll("\\s", "").toLowerCase());
+            // for(CountryPath p : world.countryPaths.get(c.getName()))
+            // p.setFill(c.getColor());
+            // }
+
+            // Iterator<List<CountryPath>> iterPaths = world.countryPaths.values().iterator();
+            // int i = 0;
+            // while(iterPaths.hasNext()){
+            //     CountryPath cp = iterPaths.next().get(i);
+            //     cp.setFill(Color.WHITE);
+            // }
+    }
+        catch(Exception e){
+
+        }
+
         try{
-                Country c = countries.get(tf.getText().replaceAll("\\s+", "").toLowerCase());
-                for(CountryPath p : world.countryPaths.get(c.getName())){
-                    p.setFill(Color.RED);
+        for(String key : keys){
+            Country c = countries.get(key);
+            for(CountryPath p : world.countryPaths.get(c.getName())){
+                // System.out.println(c.getName());
+                if(tf.getText().equals("united states")){
+                    System.out.println("Entry: " + entry);
+                    System.out.println("Key : " + key);
+                    System.out.println("KeySub : " + key.substring(0, entry.length()));
+                    System.out.println("C name : " + c.getName());
+                }
+
+                p.setFill(Color.RED);
+            }
+        }
+        } catch(Exception e){
+                if(tf.getText().equals("united states")){
+                    System.out.println("Here");
                 }
         }
-        catch(Exception error){
-                Stage dialog = new Stage();
-                dialog.initModality(Modality.APPLICATION_MODAL);
-                VBox v = new VBox();
-                Text t = new Text();
-                if(tf.getText().isEmpty())
-                    t.setText("Enter Search Term.");
-                else
-                    t.setText("No Country Found. Try Again.");
-                v.getChildren().add(t);
-                Scene dialogScene = new Scene(v, 300, 200);
-                dialog.setScene(dialogScene);
-                dialog.show();
-                System.out.println("No Country Found");
+
+        for(String key : countries.keySet()){
+            if(keys.contains(key)){
+
+            } else {
+                Country c = countries.get(key);
+                try {
+                if(c != null){
+                for(CountryPath p : world.countryPaths.get(c.getName()))
+                    p.setFill(Color.WHITE);
+                }
+                    
+                } catch (Exception e) {
+                    // System.out.println("Here");
+                    // System.out.println(c.getName());
+                }
+            }
         }
-        tf.setText("");
+
+        // for(CountryPath p : world.countryPaths.values()){
+
+        // }
+        
+
+        // try{
+        //         Country c = countries.get(tf.getText().replaceAll("\\s+", "").toLowerCase());
+        //         for(CountryPath p : world.countryPaths.get(c.getName())){
+        //             p.setFill(Color.RED);
+        //         }
+        // }
+        // catch(Exception error){
+        //         Stage dialog = new Stage();
+        //         dialog.initModality(Modality.APPLICATION_MODAL);
+        //         VBox v = new VBox();
+        //         Text t = new Text();
+        //         if(tf.getText().isEmpty())
+        //             t.setText("Enter Search Term.");
+        //         else
+        //             t.setText("No Country Found. Try Again.");
+        //         v.getChildren().add(t);
+        //         Scene dialogScene = new Scene(v, 300, 200);
+        //         dialog.setScene(dialogScene);
+        //         dialog.show();
+        //         System.out.println("No Country Found");
+        // }
+        // tf.setText("");
     }
 }
