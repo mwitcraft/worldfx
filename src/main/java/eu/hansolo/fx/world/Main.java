@@ -37,72 +37,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-
-
-//import javafx.stage.Modality;
 import javafx.stage.Stage;
-//import javafx.scene.control.Button;
-//import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-//import javafx.scene.input.KeyCode;
-//import javafx.scene.text.*;
-
-
 import java.util.ArrayList;
-//import java.util.Collection;
 import java.util.HashMap;
-//import java.util.Iterator;
-//import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javafx.scene.layout.FlowPane;
-//import javafx.scene.layout.VBox;
-//import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-//import javafx.stage.Stage;
 import javafx.scene.control.ScrollPane;
-
-
-
 import java.util.Random;
-
-/*
-public class Main extends Application {
-    private World world;
-
-    private Factbook factbook = new Factbook();
-
-    @Override
-    public void init() {
-        for (Country c : Country.values())
-            c.setColor(Color.WHITE);
-
-        world = WorldBuilder.create().resolution(Resolution.HI_RES).mousePressHandler(evt -> {
-            // Get click information
-            CountryPath countryPath = (CountryPath) evt.getSource();
-            Locale locale = countryPath.getLocale();
-            String countryName = locale.getDisplayCountry();
-
-            // Intialize popup window
-            StackPane pane = new StackPane();
-            VBox root = new VBox();
-            Label label = new Label(countryName); // Country Name
-            root.getChildren().add(label);
-
-            Text t = new Text();
-            t.wrappingWidthProperty().bind(pane.widthProperty());
-            root.getChildren().add(t);
-
-            pane.getChildren().add(root);
-            Stage stage = new Stage();
-            stage.setTitle(locale.getDisplayCountry());
-            Scene scene = new Scene(pane, 550, 250);
-            stage.setScene(scene);
-            stage.show();
-
-        }).zoomEnabled(true).selectionEnabled(true).build();
-
-*/
 
 public class Main extends Application {
 	private static final Random RND = new Random();
