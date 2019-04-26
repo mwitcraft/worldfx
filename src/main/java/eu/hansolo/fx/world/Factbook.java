@@ -14,7 +14,6 @@ import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.net.URL;
 
-
 class Factbook{ 
 
 private String factbookPath = "";
@@ -22,9 +21,9 @@ private String factbookPath = "";
 private JSONObject countryData;
 
     public Factbook(){
-    	URL url = getClass().getResource("factbook.json");
-    	factbookPath = url.getPath();
-    			
+        URL url = getClass().getResource("factbook.json");
+        factbookPath = url.getPath();
+
         JSONParser parser = new JSONParser();
         FileReader f = null;
         try {
